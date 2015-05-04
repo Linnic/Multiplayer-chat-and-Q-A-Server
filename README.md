@@ -4,7 +4,7 @@
 
 ## How to use
 ###1. Start Server
-  `node server.js`.
+  `$ node server.js` .
 
 ###2. Open web browser
   connect to `http://localhost:8165` . 
