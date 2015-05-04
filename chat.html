@@ -1,0 +1,116 @@
+<!--
+	
+	Project : Multiplayer chat and Q&A Web
+	Author : Minic Lin
+	Date : 2015.05.04
+	Title : 103 second term
+			the mid-term school assignment of Network programming 
+
+-->
+
+<html lang="utf-8"> 
+  <head>
+    <meta charset="utf-8">
+    <title>聊天室 & 腦筋急轉彎</title> 
+	<link rel="stylesheet" href="./main.css">
+	<link rel="stylesheet" href="./bootstrap.css">
+    <script src="http://localhost:8165/socket.io/socket.io.js"></script> 
+    <script>
+      <!-- connect to server -->
+	  var socket = io.connect('http://localhost:8165'); 
+	  var playerpoint = 0;
+	  
+	  <!-- input username -->
+      socket.on('connect', function() {
+        socket.emit('addme', prompt('Who are you?')); 
+      });
+	  
+	  
+	  <!-- normal chat -->
+      socket.on('chat',function(username, data) { 
+		var p = document.createElement('p'); 
+		p.innerHTML = username + ': ' + data;
+        document.getElementById('output').appendChild(p); 
+      });
+	  
+	  <!-- system message -->
+	  socket.on('sysmessage',function(username, data) { 
+			var p = document.createElement('p'); 
+			p.innerHTML = username + ': ' + data;
+			p.style.color="#E1E100";
+			document.getElementById('output').appendChild(p); 
+      });
+	  
+	  <!-- show win or not -->
+	  socket.on('sys', function (username,message) {
+		//	console.log(username + " " + message);
+			var p = document.createElement('p'); 
+			p.innerHTML = username + ': ' + message;
+			p.style.color = "red";
+			p.style.fontFamily = "Cursive";
+			p.style.fontStyle = "Italic";
+			document.getElementById('output').appendChild(p); 
+	  });
+	  
+	  <!-- show the question -->
+	  socket.on('message', function (username,message) {
+		//	console.log(username + " " + message);
+			var p = document.createElement('p'); 
+			p.innerHTML = username + ': ' + message;
+			p.style.color="blue";
+			p.style.fontFamily = "Impact";
+			document.getElementById('output').appendChild(p); 
+	  });
+	  
+	  <!-- send player's point to server -->
+	  socket.on('point', function (username,point) {
+		//	console.log(username + " " + point);
+		//	console.log(playerpoint);
+			playerpoint += point;
+		//	console.log(playerpoint);
+			if(playerpoint >= 5){
+				socket.emit('win', playerpoint);
+			}
+	  });
+	  
+	  <!-- reset player's point -->
+	  socket.on('reset', function (point) {
+		//	console.log("point" + point);
+			playerpoint = point;
+		//	console.log("playerpoint" + playerpoint);
+	  });
+	  
+	  <!-- listen for button click -->
+      window.addEventListener('load',function() { 
+		document.getElementById('sendtext').addEventListener('click',function() {
+          var text = document.getElementById('data').value; 
+          socket.emit('sendchat', text);
+        }, false); 
+      }, false);
+
+    </script>
+  </head>
+
+  <body>
+
+      <div class="container">
+        <h1> Multiplayer chat and Q&A </h1>
+        <p> You can chat with friends or play the Q&A game with friends. </p>
+      </div>
+	
+	  <div class="container">
+        <h2>show the chat</h2>
+        <p></p>
+        <div class="row">
+            <div id="output" class="col-md-12 contentchat">
+					
+            </div>
+            <div id="send" class="col-md-12 contentfriend">
+                <input type="text" id="data" size="100" class="col-md-12"/><br />
+				<input type="button" id="sendtext" value="Send Text" size="100" class="col-md-12"/>
+			</div>
+        </div>
+	  </div>
+	
+  </body>
+</html>

@@ -1,0 +1,21 @@
+/***
+	
+	Project : Multiplayer chat and Q&A Server's css
+	Author : Minic Lin
+	Date : 2015.05.04
+	Title : 103 second term
+			the mid-term school assignment of Network programming 
+
+***/
+
+.contentchat {
+  position: relative;
+  background-color:#FFFFBB !important;
+  margin: 0px 0px;
+}
+
+.contentfriend {
+  margin-top: 15px;
+  
+}
+
