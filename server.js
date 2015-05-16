@@ -134,7 +134,7 @@ io.sockets.on('connection', function (socket) {
 			restart = true;
 			
 			//reset question
-			index = getRandomArray(0, 35, 35);
+			index = getRandomArray(0, 34, 35);
 			console.log(index);
 			
 			//reset client point
